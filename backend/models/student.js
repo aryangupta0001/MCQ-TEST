@@ -28,7 +28,7 @@ const examInfo = new mongoose.Schema({
     },
 
     time: {
-        type: Date, // Assuming you want to store the time as a Date object
+        type: Date,                                         // Assuming you want to store the time as a Date object
         required: true
     },
 
@@ -48,7 +48,9 @@ const StudentSchema = new mongoose.Schema({
 
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true                                        // Enforce uniqueness for the email field
+
     },
 
     password: {
@@ -61,5 +63,5 @@ const StudentSchema = new mongoose.Schema({
 
 
 const Student = mongoose.model("Student", StudentSchema);
-
+Student.createIndexes();                                    // Create indexes
 module.exports = Student;
