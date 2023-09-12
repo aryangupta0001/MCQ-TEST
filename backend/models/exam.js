@@ -1,3 +1,4 @@
+const { type } = require("@testing-library/user-event/dist/type");
 const mongoose = require("mongoose");
 
 const ExamSchema = new mongoose.Schema({
@@ -6,7 +7,7 @@ const ExamSchema = new mongoose.Schema({
         required: true
     },
 
-    ques: {
+    totalQues: {
         type: Number,
         required: true
     },
@@ -29,7 +30,13 @@ const ExamSchema = new mongoose.Schema({
     qualifyingMarks: {
         type: Number,
         required: true
-    }
+    },
+
+    questionSets: [
+        {
+            type: String
+        }
+    ]
 })
 
 module.exports = mongoose.model("exam", ExamSchema);
