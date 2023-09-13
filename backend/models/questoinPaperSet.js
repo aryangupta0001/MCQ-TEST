@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const examSetScheema = new mongoose.Schema({
-    question: [
+    questions: [
         {
-            ques: {
+            question: {
                 type: String,
                 requied: true
             },
@@ -38,7 +38,12 @@ const examSetScheema = new mongoose.Schema({
     exam: {
         type: String,
         required: true
+    },
+
+    setNumber: {
+        type: Number,
+        requied: true
     }
 })
 
-module.exports = mongoose.model("ques", QuesSchema);
+module.exports = mongoose.model("ques", examSetScheema);
