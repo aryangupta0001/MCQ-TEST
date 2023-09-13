@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Exam = require("../models/exam")
+const QuestionPaperSet = require("../models/questionPaperSet");
 const { body, validationResult } = require('express-validator');
 // const fetchUser = require("../middleware/fetchUser")
 
@@ -40,25 +41,44 @@ router.post("/createexam",
 
 
 
-router.post("/createquestion",
+router.post("/createquestionpaperset",
     [
-        body("question", "Enter a question").isString(),
-        body("opptionA", "Enter Option A").isString(),
-        body("opptionB", "Enter Option A").isString(),
-        body("opptionC", "Enter Option A").isString(),
-        body("opptionD", "Enter Option A").isString(),
-        body("answer", "Enter Correct option").isString(),
         body("exam", "Enter Exam Name").isString(),
-        
+        body("setNumber", "Enter Set Number").isNumeric()
     ],
     async (req, res) => {
         try {
+            const result = validationResult(req);
 
-        }
-        catch (error) {
+            if (result.isEmpty()) {
+                const { exam, setNumber } = req.body;
 
+
+                const questionSet = await QuestionPaperSet.create({
+                    exam, setNumber
+                });
+
+                res.send(questionSet);
+            }
+
+            else {
+                console.log("Result : ", result.array());
+                res.send({ errors: result.array() });
+            }
+
+        } catch (error) {
+            console.log("Error : ", error.message);
         }
     }
 )
 
-module.exports = router
+
+
+body("question", "Enter a question").isString(),
+    body("optionA", "Enter Option A").isString(),
+    body("optionB", "Enter Option A").isString(),
+    body("optionC", "Enter Option A").isString(),
+    body("optionD", "Enter Option A").isString(),
+    body("answer", "Enter Correct option").isString(),
+
+    module.exports = router
