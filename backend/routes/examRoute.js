@@ -41,10 +41,19 @@ router.post("/createexam",
 
 
 router.post("/createquestion",
-    [],
+    [
+        body("question", "Enter a question").isString(),
+        body("opptionA", "Enter Option A").isString(),
+        body("opptionB", "Enter Option A").isString(),
+        body("opptionC", "Enter Option A").isString(),
+        body("opptionD", "Enter Option A").isString(),
+        body("answer", "Enter Correct option").isString(),
+        body("exam", "Enter Exam Name").isString(),
+        
+    ],
     async (req, res) => {
         try {
-            
+
         }
         catch (error) {
 
