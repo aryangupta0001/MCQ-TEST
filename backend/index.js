@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());        // Use this middleware to parse incoming requests with JSON Payload.
 
 // Available Routes :-
-app.use("/api/exam/", require("./routes/exam"));
+app.use("/api/exam/", require("./routes/examRoute"));
 // app.use("/api/notes/", require("./routes/notes"));
 
 app.listen(PORT, () => {
