@@ -1,4 +1,3 @@
-const { type } = require("@testing-library/user-event/dist/type");
 const mongoose = require("mongoose");
 
 const ExamSchema = new mongoose.Schema({
@@ -34,7 +33,7 @@ const ExamSchema = new mongoose.Schema({
 
     questionSets: [
         {
-            type: String
+            type: String    
         }
     ]
 })

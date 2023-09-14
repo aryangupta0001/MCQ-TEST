@@ -3,7 +3,7 @@ const router = express.Router();
 const Exam = require("../models/exam")
 const QuestionPaperSet = require("../models/questionPaperSet");
 const { body, validationResult } = require('express-validator');
-// const fetchUser = require("../middleware/fetchUser")
+const questionPaperSet = require("../models/questionPaperSet");
 
 
 router.post("/createexam",
@@ -53,12 +53,17 @@ router.post("/createquestionpaperset",
             if (result.isEmpty()) {
                 const { exam, setNumber } = req.body;
 
-
                 const questionSet = await QuestionPaperSet.create({
                     exam, setNumber
                 });
 
-                res.send(questionSet);
+                const examDoc = await Exam.findOneAndUpdate(
+                    { name: exam },
+                    { $push: { questionSets: questionSet._id } }
+                );
+
+                console.log(questionSet, examDoc);
+                // res.send(questionSet, examDoc);
             }
 
             else {
@@ -73,12 +78,71 @@ router.post("/createquestionpaperset",
 )
 
 
+router.put("/createquestion",
+    [
+        body("question", "Enter a question").isString(),
+        body("optionA", "Enter Option A").isString(),
+        body("optionB", "Enter Option A").isString(),
+        body("optionC", "Enter Option A").isString(),
+        body("optionD", "Enter Option A").isString(),
+        body("answer", "Enter Correct option").isString(),
+        body("setId", "Enter Set Id").isString()
+    ],
+    async (req, res) => {
+        try {
+            const result = validationResult(req);
 
-body("question", "Enter a question").isString(),
-    body("optionA", "Enter Option A").isString(),
-    body("optionB", "Enter Option A").isString(),
-    body("optionC", "Enter Option A").isString(),
-    body("optionD", "Enter Option A").isString(),
-    body("answer", "Enter Correct option").isString(),
+            if (result.isEmpty) {
 
-    module.exports = router
+                const { questionNumber, question, optionA, optionB, optionC, optionD, answer, setId } = req.body;
+                const quesObj = {
+                    questionNumber: questionNumber,
+                    question: question,
+                    optionA: optionA,
+                    optionB: optionB,
+                    optionC: optionC,
+                    optionD: optionD,
+                    answer: answer
+                };
+
+                const data = await QuestionPaperSet.findOneAndUpdate({ _id: setId },
+                    { $push: { questions: quesObj } });
+
+                res.send(data);
+            }
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+    }
+)
+
+
+router.get("/searchexam",
+    [
+        body("examName", "Enter Exam Name").isString(),
+        // body("setNumber", "Enter Set No.").isNumeric()
+    ],
+
+    async (req, res) => {
+
+        const result = validationResult(req);
+
+        if (result.isEmpty) {
+            const { name } = req.body;
+            const examDocument = await Exam.find({ name: name });
+
+            if (examDocument) {
+                res.send(examDocument);
+            }
+            else {
+                res.send("No Exam found with exam name : ", name);
+            }
+
+        }
+
+    })
+
+
+
+module.exports = router

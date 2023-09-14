@@ -4,6 +4,11 @@ const examSetScheema = new mongoose.Schema({
     questions: {
         type: [
             {
+                questionNumber: {
+                    type: Number,
+                    required: true
+                },
+
                 question: {
                     type: String,
                     requied: true
@@ -47,8 +52,8 @@ const examSetScheema = new mongoose.Schema({
 
     setNumber: {
         type: Number,
-        requied: true
+        requiRed: true
     }
 })
 
-module.exports = mongoose.model("ques", examSetScheema);
+module.exports = mongoose.model("quesPaperSet", examSetScheema);
