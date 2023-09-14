@@ -63,7 +63,7 @@ router.post("/createquestionpaperset",
                 );
 
                 console.log(questionSet, examDoc);
-                // res.send(questionSet, examDoc);
+                res.send({questionSet, examDoc});
             }
 
             else {
